@@ -1,6 +1,6 @@
 import hashlib
 import requests
-
+import time
 import sys
 import json
 
@@ -64,7 +64,11 @@ if __name__ == '__main__':
 
         # TODO: Get the block from `data` and use it to look for a new proof
         # new_proof = ???
+        #grab the last block from the data
         last_block = data['last_block']
+        # generate the proof of work
+        # start time
+        start_time = time.time()
         new_proof = proof_of_work(last_block)
 
         # When found, POST it to the server {"proof": new_proof, "id": id}
@@ -77,8 +81,12 @@ if __name__ == '__main__':
         # add 1 to the number of coins mined and print it.  Otherwise,
         # print the message from the server.
         if data['message'] == 'New block forged':
+            end_time = time.time()
             coins += 1 
+            print(f'It took {end_time - start_time} seconds for proof validation')
             print(data['message'])
             print("Total coins mined:", coins)
         else:
             print(data['message'])
+            print("this?")
+        

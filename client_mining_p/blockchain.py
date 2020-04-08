@@ -140,10 +140,10 @@ def mine():
     data = request.get_json()
     # * Check that 'proof', and 'id' are present
     # * if either 'proof' or 'id' is not present
-    if not data['proof'] is None or data['id'] is None:
+    if data['proof'] is None or data['id'] is None:
         # * return a 400 error using `jsonify(response)` with a 'message'
         return jsonify({
-            'Error:': "You need to submit both 'proof' and 'id' with your request"
+            'message:': "You need to submit both 'proof' and 'id' with your request"
         }), 400
 
     #* if they are present
@@ -152,20 +152,21 @@ def mine():
     #* validate the 'proof' sent
     valid_proof = blockchain.valid_proof(block_string, data['proof'])
     #* if proof is valid
-    if valid_proof == True:
+    if valid_proof:
         last_block = blockchain.last_block
         previous_hash = blockchain.hash(last_block)
         #* forge a new block using the previous hash
         new_block = blockchain.new_block(data['proof'], previous_hash)
         # * send a 'success' response
-        return jsonify({
+        response = {
             'message': 'New block forged',
             'index': new_block['index'],
             'timestamp': new_block['timestamp'],
             'transaction': new_block['transactions'],
             'proof': new_block['proof'],
             'previous_hash': new_block['previous_hash']
-        }), 200
+        }
+        return jsonify(response), 200
     #* else if proof is not valid
     else:
         #* send a 'failure' message
