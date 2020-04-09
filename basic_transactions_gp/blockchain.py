@@ -7,6 +7,7 @@ from time import time
 from uuid import uuid4
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 
 class Blockchain(object):
@@ -58,7 +59,7 @@ class Blockchain(object):
     def new_transaction(self, sender, recipient, amount):
         self.current_transactions.append({
             'sender': sender,
-            'recipient': recipient,
+            'recipient': recipient.strip(),
             'amount': amount
         })
         return self.last_block['index'] + 1
@@ -134,7 +135,7 @@ class Blockchain(object):
 
 # Instantiate our Node
 app = Flask(__name__)
-
+CORS(app)
 # Generate a globally unique address for this node
 node_identifier = str(uuid4()).replace('-', '')
 
