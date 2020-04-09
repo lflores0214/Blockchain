@@ -153,9 +153,9 @@ def mine():
     valid_proof = blockchain.valid_proof(block_string, data['proof'])
     #* if proof is valid
     if valid_proof:
+        #* forge a new block using the previous hash
         last_block = blockchain.last_block
         previous_hash = blockchain.hash(last_block)
-        #* forge a new block using the previous hash
         new_block = blockchain.new_block(data['proof'], previous_hash)
         # * send a 'success' response
         response = {

@@ -16,7 +16,7 @@ def proof_of_work(block):
     block_string = json.dumps(block, sort_keys=True)
     proof = 0
     while valid_proof(block_string, proof) is False:
-        proof += 1 
+        proof += 1
     return proof
 
 
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     id = f.read()
     print("ID is", id)
     f.close()
-    #* Add any coins granted to a simple integer total, and print the amount of coins the client has earned
+    # * Add any coins granted to a simple integer total, and print the amount of coins the client has earned
     coins = 0
     # Run forever until interrupted
     while True:
@@ -64,11 +64,12 @@ if __name__ == '__main__':
 
         # TODO: Get the block from `data` and use it to look for a new proof
         # new_proof = ???
-        #grab the last block from the data
+        # grab the last block from the data
         last_block = data['last_block']
         # generate the proof of work
         # start time
         start_time = time.time()
+        print("validation starting")
         new_proof = proof_of_work(last_block)
 
         # When found, POST it to the server {"proof": new_proof, "id": id}
@@ -82,11 +83,12 @@ if __name__ == '__main__':
         # print the message from the server.
         if data['message'] == 'New block forged':
             end_time = time.time()
-            coins += 1 
-            print(f'It took {end_time - start_time} seconds for proof validation')
-            print(data['message'])
+            coins += 1
+            print("validation finished")
+            print(
+                f'It took {end_time - start_time} seconds for proof validation')
+            print(data)
             print("Total coins mined:", coins)
         else:
             print(data['message'])
             print("this?")
-        
